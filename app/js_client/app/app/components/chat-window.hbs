@@ -1,0 +1,10 @@
+<div class='chat-window' 
+	{{did-insert this.openSocket}}
+	{{will-destroy this.closeSocket}}
+>
+Chat Window
+
+<BsButton @type="primary" {{on "click" this.sendMessage}}>Test</BsButton> 
+
+{{yield}}
+</div>

@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:  
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile.production
+    image: chat:production
+    ports:
+      - 5000:5000
+    restart: always

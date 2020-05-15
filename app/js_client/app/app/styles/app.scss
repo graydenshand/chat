@@ -1,0 +1,23 @@
+/*******************************
+******BOOTSTRAP OVERRIDES*******
+********************************/
+// Colors
+$primary: #000;
+
+
+/********************************
+********IMPORT BOOTSTRAP*********
+*********************************/
+@import "ember-bootstrap/bootstrap";
+
+
+/*********************
+*****COMPONENTS*******
+**********************/
+
+// Chat Window
+.chat-window {
+	height: 500px;
+	background-color: #eee;
+}
+

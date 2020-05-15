@@ -1,0 +1,30 @@
+FROM ubuntu:18.04
+MAINTAINER Grayden Shand graydenshand@gmail.com
+
+# Install python
+# --------------
+RUN apt-get update -y && \
+    apt-get install -y python3-venv \
+    python3-pip \
+    python3-dev \
+    locales locales-all
+
+# Set up Env
+# ----------
+## Set the locale
+ENV LC_ALL=en_US.UTF-8
+ENV LANGUAGE en_US:en 
+ENV LANG=en_US.UTF-8
+
+## Copy app
+RUN mkdir /home/chat
+WORKDIR /home/chat
+COPY requirements.txt /home/chat/requirements.txt
+RUN python3 -m pip install -r requirements.txt
+COPY . /home/chat/
+
+
+# Run app
+# -------
+ENTRYPOINT ["python3"]
+CMD ["main.py"]

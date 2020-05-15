@@ -1,0 +1,14 @@
+
+Build Production Image
+> docker build -t chat:production -f Dockerfile.production .
+
+Run Production Container
+> docker run -it --rm -p 5000:5000 chat:production
+
+
+Tag Image for AWS
+> docker tag chat:latest 671532335163.dkr.ecr.us-east-1.amazonaws.com/chat:latest
+
+
+Push Image to AWS
+> docker push 671532335163.dkr.ecr.us-east-1.amazonaws.com/chat:latest
