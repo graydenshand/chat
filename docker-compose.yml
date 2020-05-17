@@ -9,3 +9,7 @@ services:
     ports:
       - 5000:5000
     restart: always
+  db:
+    image: postgres
+    ports:
+      - 5432:5432      
