@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-#from ..base import Base
+from ..base import Base
 
 class User(Base):
     __tablename__ = 'users'
@@ -8,7 +8,7 @@ class User(Base):
     name = Column(String(50), unique=True)
     email = Column(String(120), unique=True)
 
-    messages = relationship("Message", back_populates="author")
+    messages = relationship("Message", back_populates="user")
 
     def __init__(self, name=None, email=None):
         self.name = name
