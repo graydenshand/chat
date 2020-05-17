@@ -1,13 +1,16 @@
-FROM ubuntu:18.04
+FROM node
 MAINTAINER Grayden Shand graydenshand@gmail.com
 
-# Install python
+# Install packages
 # --------------
 RUN apt-get update -y && \
     apt-get install -y python3-venv \
     python3-pip \
     python3-dev \
     locales locales-all
+
+RUN npm install -g npm \ 
+	npm install -g ember-cli
 
 # Set up Env
 # ----------
@@ -22,6 +25,12 @@ WORKDIR /home/chat
 COPY requirements.txt /home/chat/requirements.txt
 RUN python3 -m pip install -r requirements.txt
 COPY . /home/chat/
+
+
+## Build js
+WORKDIR /home/chat/app/js_client/app/
+RUN ember build -prod
+WORKDIR /home/chat
 
 
 # Run app

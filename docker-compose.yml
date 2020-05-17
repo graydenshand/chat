@@ -4,12 +4,10 @@ services:
   web:
     build: 
       context: .
-      dockerfile: Dockerfile.production
-    image: chat:production
+      dockerfile: Dockerfile.web
+    image: chat-web:production
     ports:
       - 5000:5000
     restart: always
-  db:
-    image: postgres
-    ports:
-      - 5432:5432      
+    environment:
+      - DATABASE_URL=postgres://localhost:5432/chat

@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import ENV from '../config/environment'; 
 
 export default class ChatWindow extends Component {
     constructor(...args) {
@@ -15,14 +16,14 @@ export default class ChatWindow extends Component {
     }
 
     @action openSocket()  {
-      const socket = this.socketIO.socketFor(`http://localhost:5000/${this.namespace}`);
+      const socket = this.socketIO.socketFor(`${ENV.api_url}/${this.namespace}`);
       console.log(socket)
       socket.on('connect', this.onConnect, this);
       socket.on('message', this.onMessage, this);
     }
 
     @action closeSocket() {
-      const socket = this.socketIO.socketFor(`http://localhost:5000/${this.namespace}`);
+      const socket = this.socketIO.socketFor(`${ENV.api_url}/${this.namespace}`);
       socket.off('connect', this.onConnect);
       socket.off('message', this.onMessage);
     }
@@ -33,14 +34,14 @@ export default class ChatWindow extends Component {
     }
 
     onConnect() {
-      const socket = this.socketIO.socketFor(`http://localhost:5000/${this.namespace}`);
+      const socket = this.socketIO.socketFor(`${ENV.api_url}/${this.namespace}`);
       socket.send('Hello World');
       socket.emit('message', 'Hello Server');
       console.log('Connected')
     }
 
     @action sendMessage() {
-      const socket = this.socketIO.socketFor(`http://localhost:5000/${this.namespace}`);
+      const socket = this.socketIO.socketFor(`${ENV.api_url}/${this.namespace}`);
       socket.send('Test');
     }
 }

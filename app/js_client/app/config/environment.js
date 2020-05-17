@@ -32,6 +32,7 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.api_url = 'http://127.0.0.1:5000'
   }
 
   if (environment === 'test') {
@@ -48,6 +49,7 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     // here you can enable a production-specific feature
+    ENV.api_url = 'https://immense-meadow-61514.herokuapp.com'
   }
 
   return ENV;
