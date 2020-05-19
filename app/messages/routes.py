@@ -3,6 +3,7 @@ from ..database.models import Message
 from ..database.base import db_session
 from datetime import datetime
 
+# Response schema definition
 resource_fields = {
 	'messages': fields.Nested({
 		'id': fields.Integer,
@@ -70,10 +71,12 @@ class Messages(Resource):
 		db_session.commit()
 
 		# Respond to client
-		return {"messages": message}, 200
+		return {"messages": message}, 201
+
+
 
 	@marshal_with(resource_fields)
-	def put(self, message_id=None):
+	def put(self, message_id):
 		# Validate input
 		parser = reqparse.RequestParser()
 		parser.add_argument('message', 'str', help="Couldn't format message text")
@@ -90,4 +93,15 @@ class Messages(Resource):
 
 		return {"messages": message}, 200
 
+
+
+	@marshal_with(resource_fields)
+	def delete(self, message_id):
+
+		# Update message
+		message = Message.query.filter(Message.id == message_id).first()
+		db_session.delete(message)
+		db_session.commit()
+
+		return {}, 204
 
