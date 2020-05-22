@@ -1,17 +1,23 @@
-from flask_restful import Resource, reqparse, fields, marshal_with
-from ..database.models import Message
-from ..database.base import db_session
+from flask import request, g
+from flask_restful import Resource, fields, abort
+from ..database.models.message import Message
+from ..database.base import Db
 from datetime import datetime
+from marshmallow import ValidationError
+from app.utilities.api import validate_with
 
 # Response schema definition
+"""
 resource_fields = {
 	'messages': fields.Nested({
 		'id': fields.Integer,
 		'message': fields.String,
 		'createdAt': fields.DateTime(attribute='created_at'),
 		'userId': fields.Integer(attribute="user_id")
-	})
+	}),
+	'errors': fields.String
 }
+"""
 
 class Messages(Resource):
 	"""
@@ -30,7 +36,6 @@ class Messages(Resource):
 	"""
 
 
-	@marshal_with(resource_fields)
 	def get(self, message_id=None):
 		"""
 		Get one or many messages
@@ -38,70 +43,48 @@ class Messages(Resource):
 		# Message id is defined, return the message with the specified id
 		if message_id:
 			message = Message.query.filter(Message.id == message_id).first()
-			return {"messages":message}, 200
+			return {"messages": Message.schema().dump(message)}, 200
 		# Message id is not defined, return all messages
 		else:
 			messages = Message.query.all()
-			return {"messages":messages}, 200
+			return {"messages": Message.schema(many=True).dump(messages)}, 200
 
 
-
-	@marshal_with(resource_fields)
+	@validate_with(Message.schema())
 	def post(self):
 		"""
 		Create a new message
 		"""
-
-		# Validate input
-		parser = reqparse.RequestParser()
-		parser.add_argument('message', 'str', help="Couldn't format message text")
-		parser.add_argument('userId', 'int', help="Couldn't format userId")
-		args = parser.parse_args()
-		
-		# Create message
-		message_data = {
-			"user_id": args['userId'],
-			"message": args['message'],
-			'created_at': datetime.now()
-		}
-		message = Message(**message_data)
+		message = g.validated_object
+		message.created_at = datetime.now()
 
 		# Save message to db
-		db_session.add(message)
-		db_session.commit()
+		Db.session.add(message)
+		Db.session.commit()
 
 		# Respond to client
-		return {"messages": message}, 201
+		return {"messages": Message.schema().dump(message)}, 201
 
 
-
-	@marshal_with(resource_fields)
+	@validate_with(Message.schema(partial=True))
 	def put(self, message_id):
-		# Validate input
-		parser = reqparse.RequestParser()
-		parser.add_argument('message', 'str', help="Couldn't format message text")
-		parser.add_argument('userId', 'int', help="Couldn't format userId")
-		parser.add_argument('createdAt', 'datetime', help="Couldn't format createdAt")
-		args = parser.parse_args()
-
 		# Update message
 		message = Message.query.filter(Message.id == message_id).first()
-		for k, v in args.items():
+		for k, v in request.json.items():
 			setattr(message, k, v)
-		db_session.add(message)
-		db_session.commit()
+		Db.session.add(message)
+		Db.session.commit()
 
-		return {"messages": message}, 200
+		return {"messages": Message.schema().dump(message)}, 200
 
 
 
-	@marshal_with(resource_fields)
 	def delete(self, message_id):
 
 		# Update message
 		message = Message.query.filter(Message.id == message_id).first()
-		db_session.delete(message)
-		db_session.commit()
+		Db.session.delete(message)
+		Db.session.commit()
 
 		return {}, 204
 

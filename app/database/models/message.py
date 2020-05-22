@@ -1,9 +1,23 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from ..base import Base, SerializerMixin
+from app import db
+from marshmallow import Schema, fields
+from marshmallow import post_load
 
-class Message(Base, SerializerMixin):
+class MessageSchema(Schema):
+    id = fields.Integer()
+    message = fields.Str(required=True)
+    created_at = fields.DateTime(data_key="createdAt")
+    user_id = fields.Integer(data_key="userId", required=True)
+
+    @post_load
+    def make_message(self, data, **kwargs):
+        return Message(**data)
+
+
+class Message(db.Base):
     __tablename__ = 'messages'
+    schema = MessageSchema
     id = Column(Integer, primary_key=True)
     message = Column(String, nullable=False)
     created_at = Column(DateTime, nullable=False)
