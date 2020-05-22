@@ -1,23 +1,10 @@
 from flask import request, g
 from flask_restful import Resource, fields, abort
 from ..database.models.message import Message
-from ..database.base import Db
+from app import db
 from datetime import datetime
 from marshmallow import ValidationError
 from app.utilities.api import validate_with
-
-# Response schema definition
-"""
-resource_fields = {
-	'messages': fields.Nested({
-		'id': fields.Integer,
-		'message': fields.String,
-		'createdAt': fields.DateTime(attribute='created_at'),
-		'userId': fields.Integer(attribute="user_id")
-	}),
-	'errors': fields.String
-}
-"""
 
 class Messages(Resource):
 	"""
@@ -59,8 +46,8 @@ class Messages(Resource):
 		message.created_at = datetime.now()
 
 		# Save message to db
-		Db.session.add(message)
-		Db.session.commit()
+		db.session.add(message)
+		db.session.commit()
 
 		# Respond to client
 		return {"messages": Message.schema().dump(message)}, 201
@@ -72,8 +59,8 @@ class Messages(Resource):
 		message = Message.query.filter(Message.id == message_id).first()
 		for k, v in request.json.items():
 			setattr(message, k, v)
-		Db.session.add(message)
-		Db.session.commit()
+		db.session.add(message)
+		db.session.commit()
 
 		return {"messages": Message.schema().dump(message)}, 200
 
@@ -83,8 +70,8 @@ class Messages(Resource):
 
 		# Update message
 		message = Message.query.filter(Message.id == message_id).first()
-		Db.session.delete(message)
-		Db.session.commit()
+		db.session.delete(message)
+		db.session.commit()
 
 		return {}, 204
 

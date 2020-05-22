@@ -1,6 +1,7 @@
 from flask_restful import Resource, fields
+from flask import g
 from ..database.models import User
-from ..database.base import Db
+from app import db
 from datetime import datetime
 from app.utilities.api import validate_with
 
@@ -38,15 +39,11 @@ class Users(Resource):
 		Create a new user
 		"""
 		# Create user
-		user_data = {
-			"name": args['name'],
-			"email": args['email'],
-		}
-		user = User(**user_data)
+		user = g.validated_object
 
 		# Save user to db
-		Db.session.add(user)
-		Db.session.commit()
+		db.session.add(user)
+		db.session.commit()
 
 		# Respond to client
 		return {"users": User.schema().dump(user)}, 201
@@ -57,10 +54,10 @@ class Users(Resource):
 
 		# Update user
 		user = User.query.filter(User.id == user_id).first()
-		for k, v in args.items():
+		for k, v in request.json.items():
 			setattr(user, k, v)
-		Db.session.add(user)
-		Db.session.commit()
+		db.session.add(user)
+		db.session.commit()
 
 		return {"users": User.schema().dump(user)}, 200
 
@@ -70,7 +67,7 @@ class Users(Resource):
 
 		# Update user
 		user = User.query.filter(User.id == user_id).first()
-		Db.session.delete(user)
-		Db.session.commit()
+		db.session.delete(user)
+		db.session.commit()
 
 		return {}, 204
