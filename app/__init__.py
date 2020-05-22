@@ -1,11 +1,12 @@
 from flask import Flask
 from flask_socketio import SocketIO
 from flask_restful import Api, Resource
-from .database import Db
+from flask_sqlalchemy import SQLAlchemy
+#from .database import Db
 
 socketio = SocketIO(cors_allowed_origins=["http://127.0.0.1:5000", "http://127.0.0.1:4200", "https://immense-meadow-61514.herokuapp.com"])
 api = Api()
-db = Db()
+db = SQLAlchemy()
 
 def create_app(debug=False, config=None):
 	app = Flask(__name__)

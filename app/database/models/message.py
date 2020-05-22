@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
+#from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+#from sqlalchemy.orm import relationship
 from app import db
 from marshmallow import Schema, fields
 from marshmallow import post_load
+
 
 class MessageSchema(Schema):
     id = fields.Integer()
@@ -15,15 +16,15 @@ class MessageSchema(Schema):
         return Message(**data)
 
 
-class Message(db.Base):
+class Message(db.Model):
     __tablename__ = 'messages'
     schema = MessageSchema
-    id = Column(Integer, primary_key=True)
-    message = Column(String, nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    user = relationship("User", back_populates="messages")
+    user = db.relationship("User", back_populates="messages")
 
 
     def __init__(self, **kwargs):
