@@ -1,0 +1,10 @@
+{{#each @model.users as |user|}}
+	{{ user.name }}
+{{/each}}<br>
+<ul>
+{{#each @model.messages as |message|}}
+	<li>{{ message.message }}</li>
+{{/each}}
+</ul>
+chat
+{{outlet}}

@@ -2,11 +2,13 @@ from flask import Flask
 from flask_socketio import SocketIO
 from flask_restful import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 #from .database import Db
 
-socketio = SocketIO(cors_allowed_origins=["http://127.0.0.1:5000", "http://127.0.0.1:4200", "https://immense-meadow-61514.herokuapp.com"])
+socketio = SocketIO(cors_allowed_origins="*")
 api = Api()
 db = SQLAlchemy()
+cors = CORS()
 
 def create_app(debug=False, config=None):
 	app = Flask(__name__)
@@ -18,6 +20,7 @@ def create_app(debug=False, config=None):
 	socketio.init_app(app)
 	api.init_app(app)
 	db.init_app(app)
+	cors.init_app(app)
 
 	# Register Blueprints
 	from app.js_client import js_client as js_client_blueprint
