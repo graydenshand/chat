@@ -1,6 +1,6 @@
 from flask import request, g
 from flask_restful import Resource, fields, abort
-from ..database.models.message import Message
+from ..models import Message
 from app import db
 from datetime import datetime
 from marshmallow import ValidationError

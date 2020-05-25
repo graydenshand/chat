@@ -1,3 +1,9 @@
 channel
 {{ @model.channel }}
+<ul>
+{{#each @model.messages as |message|}}
+	<Message @message={{message}} />
+{{/each}}
+</ul>
+<Textarea placeholder="Send a message" class="form-control"/>
 {{outlet}}

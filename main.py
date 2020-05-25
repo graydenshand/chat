@@ -1,7 +1,5 @@
 #!/bin/env python
 from app import create_app, socketio
-from app.database.models import *
-from app import db
 from app.config import DevelopmentConfig, ProductionConfig
 import os
 

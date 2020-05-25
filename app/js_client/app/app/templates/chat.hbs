@@ -1,10 +1,9 @@
-{{#each @model.users as |user|}}
-	{{ user.name }}
-{{/each}}<br>
-<ul>
-{{#each @model.messages as |message|}}
-	<li>{{ message.message }}</li>
-{{/each}}
-</ul>
-chat
-{{outlet}}
+<div class="row">
+	<div class="col-sm-6 offset-sm-3">
+		{{#each @model.users as |user|}}
+			{{ user.name }}
+		{{/each}}<br>
+		chat
+		{{outlet}}
+	</div>
+</div>

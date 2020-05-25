@@ -1,9 +1,10 @@
 from flask_restful import Resource, fields
 from flask import g
-from ..database.models import User
+from ..models import User
 from app import db
 from datetime import datetime
 from app.utilities.api import validate_with
+from app import socketio
 
 class Users(Resource):
 	"""
@@ -30,6 +31,7 @@ class Users(Resource):
 			return {"users": User.schema().dump(user)}, 200
 		# User id is not defined, return all users
 		else:
+			socketio.emit("message", "Get Users")
 			users = User.query.all()
 			return {"users": User.schema(many=True).dump(users)}, 200
 
@@ -49,7 +51,7 @@ class Users(Resource):
 		return {"users": User.schema().dump(user)}, 201
 
 
-	@validate_with(User.schema)
+	@validate_with(User.schema())
 	def put(self, user_id):
 
 		# Update user

@@ -10,6 +10,7 @@ class MessageSchema(Schema):
     message = fields.Str(required=True)
     created_at = fields.DateTime(data_key="createdAt")
     user_id = fields.Integer(data_key="userId", required=True)
+    channel_id = fields.Integer(data_key="channelId", required=True)
 
     @post_load
     def make_message(self, data, **kwargs):
@@ -23,9 +24,10 @@ class Message(db.Model):
     message = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
 
     user = db.relationship("User", back_populates="messages")
-
+    channel = db.relationship("Channel", back_populates="messages")
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():

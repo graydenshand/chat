@@ -5,6 +5,6 @@ export default class ChatRoute extends Route {
 	@service store
 
 	async model() {
-		return {"users": this.store.findAll('user'), "messages": this.store.findAll('message')};
+		return {"users": this.store.findAll('user')};
 	}
 }
