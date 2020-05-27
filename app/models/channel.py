@@ -53,3 +53,9 @@ class Channel(db.Model):
         else:
             links = ''
         return links
+        
+    def to_dict(self, sparse=True):
+        if sparse == True:
+            return {col.name: getattr(self, col.name) for col in self.__table__.columns}
+        else:
+            return {col.name: getattr(self, col.name) for col in self.__table__.columns if getattr(self, col.name)}

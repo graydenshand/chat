@@ -34,7 +34,7 @@ class Messages(Resource):
 		# Message id is not defined, return all messages
 		else:
 			# Get any filters passed as query parameters
-			filters = {col.name: getattr(g.validated_object, col.name) for col in g.validated_object.__table__.columns if getattr(g.validated_object, col.name)}
+			filters = g.validated_object.to_dict(sparse=False)
 			messages = Message.query.filter_by(**filters)
 			return {"messages": Message.schema(many=True).dump(messages)}, 200
 
