@@ -1,5 +1,5 @@
 from flask_restful import Resource, fields
-from flask import g
+from flask import g, request
 from ..models import Channel
 from app import db
 from datetime import datetime
@@ -12,6 +12,7 @@ class Channels(Resource):
 	
 	GET /channels.json
 		* Returns list of channels 
+		* [params] ?name=channelName get by name
 	GET /channels/<channel_id>.json
 		* Returns a single channel 
 	POST /channels.json
@@ -22,19 +23,25 @@ class Channels(Resource):
 		* Deletes a channel
 	"""
 	
+	@validate_with(Channel.schema(only=["name"], partial=True))
 	def get(self, channel_id=None):
 		"""
 		Get one or many messages
 		"""
-		# Channel id is defined, return the channel with the specified id
 		if channel_id:
+			# Channel id is defined
+			## return the channel with the specified id
 			channel = Channel.query.filter(Channel.id == channel_id).first()
 			return {"channels": Channel.schema().dump(channel)}, 200
-		# Channel id is not defined, return all channels
 		else:
-			socketio.emit("message", "Get Channels")
-			channels = Channel.query.all()
-			return {"channels": Channel.schema(many=True).dump(channels)}, 200
+			if request.args.get("name"):
+				# Filter by name
+				channels = Channel.query.filter(Channel.name == g.validated_object.name).all()
+				return {"channels": Channel.schema(many=True).dump(channels)}, 200
+			else:
+				# return all results as list
+				channels = Channel.query.all()
+				return {"channels": Channel.schema(many=True).dump(channels)}, 200
 
 	@validate_with(Channel.schema())
 	def post(self):

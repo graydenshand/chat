@@ -4,10 +4,18 @@ from app import db
 from marshmallow import Schema, fields
 from marshmallow import post_load
 
+class Messages(fields.Field):
+    """
+    A field that serializes a Message to it's user_id
+    """
+    def _serialize(self, messages, attr, obj, **kwargs):
+        return [message.id for message in messages]
+
 class UserSchema(Schema):
     id = fields.Integer()
     name = fields.Str(required=True)
     email = fields.Email(required=True)
+    messages = Messages()
 
     @post_load
     def make_user(self, data, **kwargs):

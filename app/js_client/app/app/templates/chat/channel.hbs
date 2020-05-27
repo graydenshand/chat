@@ -1,9 +1,10 @@
 channel
-{{ @model.channel }}
+{{ @model.channel.name }}
 <ul>
-{{#each @model.messages as |message|}}
+{{#each @model.channel.messages as |message| }}
 	<Message @message={{message}} />
 {{/each}}
+
 </ul>
 <Textarea placeholder="Send a message" class="form-control"/>
 {{outlet}}

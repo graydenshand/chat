@@ -1,8 +1,8 @@
 import Model, { attr, hasMany } from '@ember-data/model';
 
-export default class UserModel extends Model {
+export default class ChannelModel extends Model {
   @attr('string') name;
-  @attr('string') email;
+  @attr('date') createdAt;
 
   @hasMany('messages') messages;
 }

@@ -4,7 +4,6 @@ from app import db
 from marshmallow import Schema, fields
 from marshmallow import post_load
 
-
 class MessageSchema(Schema):
     id = fields.Integer()
     message = fields.Str(required=True)

@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_socketio import SocketIO
-from flask_restful import Api, Resource
+from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -45,6 +45,7 @@ def create_app(debug=False, config=None):
 		return {
 			"User": User, 
 			"Message": Message, 
+			"Channel": Channel,
 			"Db": db
 		}
 
