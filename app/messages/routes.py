@@ -22,7 +22,7 @@ class Messages(Resource):
 		* Deletes a message
 	"""
 
-
+	@validate_with(Message.schema(only=["user_id", "channel_id"], partial=True))
 	def get(self, message_id=None):
 		"""
 		Get one or many messages
@@ -33,7 +33,9 @@ class Messages(Resource):
 			return {"messages": Message.schema().dump(message)}, 200
 		# Message id is not defined, return all messages
 		else:
-			messages = Message.query.all()
+			# Get any filters passed as query parameters
+			filters = {col.name: getattr(g.validated_object, col.name) for col in g.validated_object.__table__.columns if getattr(g.validated_object, col.name)}
+			messages = Message.query.filter_by(**filters)
 			return {"messages": Message.schema(many=True).dump(messages)}, 200
 
 

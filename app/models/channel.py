@@ -3,6 +3,7 @@
 from app import db
 from marshmallow import Schema, fields
 from marshmallow import post_load
+from copy import deepcopy
 
 class Messages(fields.Field):
     """
@@ -15,11 +16,14 @@ class ChannelSchema(Schema):
     id = fields.Integer()
     name = fields.Str(required=True)
     created_at = fields.DateTime(data_key="createdAt")
-    messages = Messages()
+    links = fields.Method("get_links")
 
     @post_load
     def make_channel(self, data, **kwargs):
         return Channel(**data)
+
+    def get_links(self, obj):
+        return obj.get_links()
 
 
 class Channel(db.Model):
@@ -31,9 +35,21 @@ class Channel(db.Model):
 
     messages = db.relationship("Message", back_populates="channel")
 
+    links = {
+        "messages": '/messages.json?channelId={}',
+    }
+
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
 
     def __repr__(self):
         return '<Channel %r>' % (self.name)
+
+    def get_links(self):
+        if self.id:
+            links = deepcopy(self.links)
+            links['messages'] = links['messages'].format(self.id)
+        else:
+            links = ''
+        return links
