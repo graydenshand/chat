@@ -39,7 +39,7 @@ class Messages(Resource):
 			return {"messages": Message.schema(many=True).dump(messages)}, 200
 
 
-	@validate_with(Message.schema())
+	@validate_with(Message.schema(partial=True))
 	def post(self):
 		"""
 		Create a new message

@@ -22,13 +22,15 @@ def validate_with(schema):
 			# Validate data
 			try: 
 				if request.is_json:
+					print(request.json)
 					# Store the validated object in the g context variable, enabling access from routes
 					g.validated_object = schema.load(request.json)
 				else:
 					g.validated_object = schema.load(request.args.to_dict())
 			except ValidationError as err:
 				# Return an error if validation fails
-				abort(401, errors=err.messages)
+				print(err.messages)
+				abort(406, errors=[str(err.messages)])
 			# run wrapped function
 			result = f(*args, **kwargs)
 			return result

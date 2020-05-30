@@ -5,7 +5,7 @@ export default class MessageModel extends Model {
   @attr('date') createdAt;
   @attr('number') userId;
   @attr('number') channelId;
-
-  @belongsTo('user') user;
-  @belongsTo('channel') channel;
+ 
+  //@belongsTo('user') userId;
+  //@belongsTo('channel') channelId;
 }
