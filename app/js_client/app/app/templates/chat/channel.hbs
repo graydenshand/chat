@@ -1,10 +1,12 @@
 channel
-{{ @model.channel.name }}
+{{ @model.name }}
 <ul>
-{{#each @model.channel.messages as |message| }}
+{{#each @model.messages as |message| }}
 	<Message @message={{message}} />
 {{/each}}
 
 </ul>
 <ChatInput />
+<BsButton @type="primary" {{on "click" this.insertMessage }}>Test</BsButton>
+
 {{outlet}}
