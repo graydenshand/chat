@@ -1,15 +1,16 @@
-<div class="row">
-	<div class="col-sm-6 offset-sm-3">
+<div id='chat-grid'>
+	<div id='chat-menu'>
 		<h5>Users</h5>
 		{{#each @model.users as |user|}}
 			{{ user.name }}
 		{{/each}}<br><br>
 		<h5>Channels</h5>
 		{{#each @model.channels as |channel|}}
-			<LinkTo @route="chat.channel" @model={{channel.id}}>{{ channel.name }}</LinkTo>
+			<LinkTo @route="chat.channel" @model={{channel.id}}>#{{ channel.name }}</LinkTo><br>
 		{{/each}}<br>
+	</div>
 
-		<br><br><br>
+	<div id='chat-channel'>
 		<h5>Chat</h5>
 		{{outlet}}
 	</div>

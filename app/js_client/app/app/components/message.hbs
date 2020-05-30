@@ -1,2 +1,5 @@
-<li>{{@message.message}}</li>
+<li class="message">
+	<strong>{{ @message.userId.name}}</strong><br>
+	<p>{{@message.message}}</p>
+</li>
 {{yield}}

@@ -10,6 +10,27 @@ $primary: #000;
 *********************************/
 @import "ember-bootstrap/bootstrap";
 
+/*********************
+********CHAT GRID**********
+**********************/
+
+#chat-menu {
+	grid-area: menu;
+}
+
+#chat-channel {
+	grid-area: channel;
+	display: flex;
+	height: 80vh;
+	flex-direction: column;
+}
+#chat-grid {
+	display: grid;
+	grid-template-areas: 
+		'menu menu channel channel channel channel';
+	grid-template-rows: 60px auto auto 60px;
+}
+
 
 /*********************
 *****COMPONENTS*******
@@ -19,5 +40,20 @@ $primary: #000;
 .chat-window {
 	height: 500px;
 	background-color: #eee;
+}
+
+
+// Message
+.message-container {
+	max-height: 400px;
+	overflow: scroll;
+	padding-left: 0;
+}
+
+
+.message {
+	list-style: none;
+	margin: 5px 0;
+
 }
 
