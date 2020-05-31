@@ -1,7 +1,7 @@
 from flask import request, g
 from flask_restful import Resource, fields, abort
 from ..models import Message
-from app import db
+from app import db, auth
 from datetime import datetime
 from marshmallow import ValidationError
 from app.utilities.api import validate_with
@@ -22,6 +22,7 @@ class Messages(Resource):
 		* Deletes a message
 	"""
 
+	@auth.login_required
 	@validate_with(Message.schema(only=["user_id", "channel_id"], partial=True))
 	def get(self, message_id=None):
 		"""
@@ -29,7 +30,7 @@ class Messages(Resource):
 		"""
 		# Message id is defined, return the message with the specified id
 		if message_id:
-			message = Message.query.filter(Message.id == message_id).first()
+			message = Message.query.get(message_id)
 			return {"messages": Message.schema().dump(message)}, 200
 		# Message id is not defined, return all messages
 		else:
@@ -38,7 +39,7 @@ class Messages(Resource):
 			messages = Message.query.filter_by(**filters)
 			return {"messages": Message.schema(many=True).dump(messages)}, 200
 
-
+	@auth.login_required
 	@validate_with(Message.schema(partial=True))
 	def post(self):
 		"""
@@ -55,10 +56,11 @@ class Messages(Resource):
 		return {"messages": Message.schema().dump(message)}, 201
 
 
+	@auth.login_required
 	@validate_with(Message.schema(partial=True))
 	def put(self, message_id):
 		# Update message
-		message = Message.query.filter(Message.id == message_id).first()
+		message = Message.query.get(message_id)
 		for k, v in request.json.items():
 			setattr(message, k, v)
 		db.session.add(message)
@@ -67,11 +69,11 @@ class Messages(Resource):
 		return {"messages": Message.schema().dump(message)}, 200
 
 
-
+	@auth.login_required
 	def delete(self, message_id):
 
 		# Update message
-		message = Message.query.filter(Message.id == message_id).first()
+		message = Message.query.get(message_id)
 		db.session.delete(message)
 		db.session.commit()
 

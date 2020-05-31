@@ -5,12 +5,6 @@ from marshmallow import Schema, fields
 from marshmallow import post_load
 from copy import deepcopy
 
-class Messages(fields.Field):
-    """
-    A field that serializes a Message to it's user_id
-    """
-    def _serialize(self, messages, attr, obj, **kwargs):
-        return [message.id for message in messages]
 
 class ChannelSchema(Schema):
     id = fields.Integer()

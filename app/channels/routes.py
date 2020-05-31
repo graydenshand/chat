@@ -1,10 +1,9 @@
 from flask_restful import Resource, fields
 from flask import g, request
 from ..models import Channel
-from app import db
+from app import db, socketio, auth
 from datetime import datetime
 from app.utilities.api import validate_with
-from app import socketio
 
 class Channels(Resource):
 	"""
@@ -22,7 +21,7 @@ class Channels(Resource):
 	DELETE /channels/<channel_id>.json
 		* Deletes a channel
 	"""
-	
+	@auth.login_required
 	@validate_with(Channel.schema(only=["name"], partial=True))
 	def get(self, channel_id=None):
 		"""
@@ -31,7 +30,7 @@ class Channels(Resource):
 		if channel_id:
 			# Channel id is defined
 			## return the channel with the specified id
-			channel = Channel.query.filter(Channel.id == channel_id).first()
+			channel = Channel.query.get(channel_id)
 			return {"channels": Channel.schema().dump(channel)}, 200
 		else:
 			if request.args.get("name"):
@@ -43,6 +42,7 @@ class Channels(Resource):
 				channels = Channel.query.all()
 				return {"channels": Channel.schema(many=True).dump(channels)}, 200
 
+	@auth.login_required
 	@validate_with(Channel.schema())
 	def post(self):
 		"""
@@ -59,12 +59,12 @@ class Channels(Resource):
 		# Respond to client
 		return {"channels": Channel.schema().dump(channel)}, 201
 
-
+	@auth.login_required
 	@validate_with(Channel.schema())
 	def put(self, channel_id):
 
 		# Update channel
-		channel = Channel.query.filter(Channel.id == channel_id).first()
+		channel = Channel.query.get(channel_id)
 		for k, v in request.json.items():
 			setattr(channel, k, v)
 		db.session.add(channel)
@@ -73,11 +73,11 @@ class Channels(Resource):
 		return {"channels": Channel.schema().dump(channel)}, 200
 
 
-
+	@auth.login_required
 	def delete(self, channel_id):
 
 		# Update channel
-		channel = Channel.query.filter(Channel.id == channel_id).first()
+		channel = Channel.query.get(channel_id)
 		db.session.delete(channel)
 		db.session.commit()
 

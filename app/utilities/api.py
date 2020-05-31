@@ -4,8 +4,10 @@ Common utility functions for api blueprints
 
 from functools import wraps
 from flask_restful import abort
-from flask import request, g
+from flask import request, g, current_app
 from marshmallow import ValidationError
+from ..models import User
+
 
 def validate_with(schema):
 	"""
@@ -36,3 +38,4 @@ def validate_with(schema):
 			return result
 		return wrapper
 	return validate_with_decorator
+

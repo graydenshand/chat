@@ -16,6 +16,8 @@ $primary: #000;
 
 #chat-menu {
 	grid-area: menu;
+	margin-right: 50px;
+	display: inline-block;
 }
 
 #chat-channel {
@@ -23,12 +25,13 @@ $primary: #000;
 	display: flex;
 	height: 80vh;
 	flex-direction: column;
+	margin-right: 50px;
 }
 #chat-grid {
 	display: grid;
 	grid-template-areas: 
-		'menu menu channel channel channel channel';
-	grid-template-rows: 60px auto auto 60px;
+		'menu channel channel';
+	grid-template-columns: auto 1fr 1fr;
 }
 
 
@@ -56,4 +59,21 @@ $primary: #000;
 	margin: 5px 0;
 
 }
+
+
+
+/*********************
+*****TYPOGRAPHY*******
+**********************/
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 800;
+
+	span {
+		font-weight: 300;
+	}
+}
+
+
+
+
 

@@ -25,9 +25,9 @@ export default class ChatChannelController extends Controller {
 	}
 
 	@action
-	scrollMessageContainer(element) {
-		console.log(element.scrollTop, element.scrollHeight)
-		element.scrollTop = element.scrollHeight
+	scrollMessageContainer() {
+		var messageContainer = document.querySelector(".message-container");
+		messageContainer.scrollTop = messageContainer.scrollHeight
 	}
 
 	@action 
@@ -42,5 +42,6 @@ export default class ChatChannelController extends Controller {
 		})
 		message.save();
 		this.messageText = ''
+		this.scrollMessageContainer()
 	}
 }

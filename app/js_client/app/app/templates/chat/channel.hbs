@@ -1,20 +1,22 @@
-<div>
-	channel
-	{{ @model.name }}
-</div>
-<div style='flex-grow: 1; display:flex; flex-direction: column; justify-content: flex-end;'>
-	<ul class='message-container' {{did-insert this.scrollMessageContainer}} {{did-update this.scrollMessageContainer @model}}>
-	{{#each @model.messages as |message| }}
-		<Message @message={{message}} />
-	{{/each}}
-	
+<div id='chat-channel'>
+	<h3><span>#{{ @model.name }}</span></h3>
+	<div style='flex-grow: 1; display:flex; flex-direction: column; justify-content: flex-end;'>
+		<ul class='message-container'
+			{{did-insert this.scrollMessageContainer}} 
+			{{did-update this.scrollMessageContainer @model}}
+		>
+		{{#each @model.messages as |message| }}
+			<Message @message={{message}} />
+		{{/each}}
+		
 
-	</ul>
-	<div>
-		<Textarea placeholder="Send a message" class="form-control" @value={{ this.messageText }} /><br>
+		</ul>
+		<div>
+			<Textarea placeholder="Send a message" class="form-control" @value={{ this.messageText }} /><br>
 
-		<BsButton @type="primary" {{on "click" this.insertMessage}}>Submit</BsButton> 
-		<BsButton @type="primary" {{on "click" this.test }}>Test</BsButton>
+			<BsButton @type="primary" {{on "click" this.insertMessage}}>Submit</BsButton> 
+			<BsButton @type="primary" {{on "click" this.test }}>Test</BsButton>
+		</div>
 	</div>
+	{{outlet}}
 </div>
-{{outlet}}
