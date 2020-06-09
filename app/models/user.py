@@ -4,6 +4,7 @@ from app import db
 from marshmallow import Schema, fields
 from marshmallow import post_load
 from copy import deepcopy
+import hashlib
 
 class Messages(fields.Field):
     """
@@ -33,6 +34,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(120), unique=True)
+    password = db.Column(db.String(64))
     messages = db.relationship("Message", back_populates="user")
     links = {
         "messages": '/messages.json?userId={}',
@@ -53,8 +55,15 @@ class User(db.Model):
             links = ''
         return links
 
-    def to_dict(self, sparse=True):
-        if sparse == True:
-            return {col.name: getattr(self, col.name) for col in self.__table__.columns}
-        else:
-            return {col.name: getattr(self, col.name) for col in self.__table__.columns if getattr(self, col.name)}
+    def validate_password(self, password):
+        m = hashlib.sha256()
+        m.update(bytes(password, 'utf-8'))
+        return m.hexdigest() == self.password
+
+    @classmethod
+    def hash_password(cls, password):
+        m = hashlib.sha256()
+        m.update(bytes(password, 'utf-8'))
+        return m.hexdigest()
+
+

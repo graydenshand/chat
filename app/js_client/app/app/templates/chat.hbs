@@ -9,6 +9,14 @@
 		{{#each @model.channels as |channel|}}
 			<LinkTo @route="chat.channel" @model={{channel.id}}>#{{ channel.name }}</LinkTo><br>
 		{{/each}}<br>
+		<div>
+			<a href="#" {{on "click" this.test}}>test</a>
+			{{#if this.session.isAuthenticated }}
+				LOGGED IN
+			{{else}}
+				LOGGED OUT
+			{{/if}}
+		</div>
 	</div>
 
 	{{outlet}}

@@ -11,4 +11,5 @@ Router.map(function() {
   this.route('chat', function() {
     this.route('channel', { path : '/:channel' });
   });
+  this.route('login');
 });
