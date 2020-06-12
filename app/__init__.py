@@ -31,23 +31,23 @@ def create_app(debug=False, config=None):
 		migrate.init_app(app, db)
 
 		# Register Blueprints
-		from app.js_client import js_client as js_client_blueprint
-		app.register_blueprint(js_client_blueprint)
+		from .client import client as client_blueprint
+		app.register_blueprint(client_blueprint)
 
-		from app.messages import messages as message_blueprint
+		from .api.messages import messages as message_blueprint
 		app.register_blueprint(message_blueprint)
 
-		from app.users import users as user_blueprint
+		from .api.users import users as user_blueprint
 		app.register_blueprint(user_blueprint)
 
-		from app.channels import channels as channel_blueprint
+		from .api.channels import channels as channel_blueprint
 		app.register_blueprint(channel_blueprint)
 
-		from app.auth import auth as auth_blueprint
+		from .api.auth import auth as auth_blueprint
 		app.register_blueprint(auth_blueprint)
 		
 		# Inject models into shell context
-		from .models import User, Message, Channel
+		from .api.models import User, Message, Channel
 		@app.shell_context_processor
 		def make_shell_context():
 			return {

@@ -3,7 +3,7 @@ from flask import g, request
 from ..models import Channel
 from app import db, socketio, auth
 from datetime import datetime
-from app.utilities.api import validate_with
+from app.api.utilities.api import validate_with
 
 class Channels(Resource):
 	"""

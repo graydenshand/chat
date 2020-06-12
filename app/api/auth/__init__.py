@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app
 from app import db, socketio, basic_auth, token_auth
-from app.models import User
+from ..models import User
 from flask_restful import Api, Resource
 import jwt
 
@@ -34,6 +34,6 @@ auth = Blueprint('auth', __name__)
 api = Api(auth)
 
 # avoid circular import errors
-from app.auth import routes
+from app.api.auth import routes
 
 api.add_resource(routes.Auth, '/auth.json')

@@ -6,7 +6,7 @@ channels = Blueprint('channels', __name__)
 api = Api(channels)
 
 # avoid circular import errors
-from app.channels import events
-from app.channels import routes
+from app.api.channels import events
+from app.api.channels import routes
 
 api.add_resource(routes.Channels, '/channels.json', '/channels/<int:channel_id>.json')

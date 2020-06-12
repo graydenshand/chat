@@ -4,7 +4,7 @@ from ..models import Message
 from app import db, auth
 from datetime import datetime
 from marshmallow import ValidationError
-from app.utilities.api import validate_with
+from app.api.utilities.api import validate_with
 
 class Messages(Resource):
 	"""

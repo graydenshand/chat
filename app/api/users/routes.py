@@ -3,7 +3,7 @@ from flask import g
 from ..models import User
 from app import db, auth
 from datetime import datetime
-from app.utilities.api import validate_with
+from app.api.utilities.api import validate_with
 from app import socketio
 
 class Users(Resource):

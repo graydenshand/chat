@@ -3,7 +3,7 @@ from flask import g, request, current_app
 from ..models import User
 from app import db, socketio, basic_auth, token_auth
 from marshmallow import fields, Schema
-from app.utilities.api import validate_with
+from app.api.utilities.api import validate_with
 from . import generate_token
 
 class AuthInputSchema(Schema):
