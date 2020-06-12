@@ -1,13 +1,6 @@
-{{! app/templates/login.hbs }}
-<form {{action 'authenticate' on='submit'}}>
-  <label for="email">Login</label>
-  {{input id='email' placeholder='Enter Login' value=email}}
-  <label for="password">Password</label>
-  {{input id='password' placeholder='Enter Password' type='password' value=password}}
-  <button type="submit">Login</button>
-
-  {{#if this.errorMessage}}
-    <p>{{this.errorMessage}}</p>
-  {{/if}}
-</form>
+<div class='row'>
+	<div class='col-sm-6 offset-sm-3'>
+		<Login />
+	</div>
+</div>
 {{outlet}}
