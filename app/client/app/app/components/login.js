@@ -8,25 +8,23 @@ export default class LoginComponent extends Component {
 	@tracked email
 	@tracked password
 	@tracked loginMode = true // false for "signup" mode
+	@tracked errorMessage
 
 	@action
     async authenticate() {
 		const credentials = {email: this.email, password: this.password};
 		const authenticator = 'authenticator:application'; // or 'authenticator:jwt'
 		this.session.authenticate(authenticator, credentials)
-		.then(
-			(data) => {
-				//console.log(data)
+			.then( (response) => {
 				if (this.session.isAuthenticated) {
 					console.log('authenticated')
 					console.log(this.session.data)
 				}
-			}
-		).catch(
-			(error) => {
-				console.log(error)
-			}
-		);
+			}).catch( (response) => {
+					const error = response.errors[0]
+					this.errorMessage = error;
+				}
+			);
 
 		
     }

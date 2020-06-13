@@ -21,6 +21,8 @@ class Auth(Resource):
 	
 	POST /channels.json
 		* Request a new auth token
+	PUT /channels.json
+		* Restore token
 
 	"""
 	@validate_with(AuthInputSchema(partial=['token']))

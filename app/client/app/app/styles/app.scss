@@ -64,6 +64,17 @@ $primary: #000;
 }
 
 
+// Chat Input 
+#chat-submit-btn {
+	position:relative;
+	bottom: 50px;
+	margin-right: 5px;
+}
+
+#chat-input {
+	resize: none;
+	padding-right: 100px;
+}
 
 /*********************
 *****TYPOGRAPHY*******
@@ -75,7 +86,6 @@ h1, h2, h3, h4, h5, h6 {
 		font-weight: 300;
 	}
 }
-
 
 
 

@@ -44,4 +44,18 @@ export default class ChatChannelController extends Controller {
 		this.messageText = ''
 		this.scrollMessageContainer()
 	}
+
+
+	@action
+	resizeMessageInput() {
+		const messageInput = document.querySelector("#chat-input");
+		messageInput.style.height = 'auto';
+	  	messageInput.style.height = (messageInput.scrollHeight) + 'px';
+	}
+
+	@action
+	setUpMessageInput() {
+		var messageInput = document.querySelector('#chat-input');
+		messageInput.setAttribute('style', 'height:' + (messageInput.scrollHeight) + 'px;overflow-y:hidden;');
+	}
 }

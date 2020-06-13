@@ -12,10 +12,10 @@
 
 		</ul>
 		<div>
-			<Textarea placeholder="Send a message" class="form-control" @value={{ this.messageText }} /><br>
-
-			<BsButton @type="primary" {{on "click" this.insertMessage}}>Submit</BsButton> 
-			<BsButton @type="primary" {{on "click" this.test }}>Test</BsButton>
+			<textarea placeholder="Send a message" class='form-control' id='chat-input' {{did-insert this.setUpMessageInput}} oninput={{this.resizeMessageInput}}>{{ this.messageText}}</textarea>
+			<div class="text-right">
+				<BsButton @type="primary" {{on "click" this.insertMessage}} id='chat-submit-btn'>Submit</BsButton> 
+			</div>
 		</div>
 	</div>
 	{{outlet}}

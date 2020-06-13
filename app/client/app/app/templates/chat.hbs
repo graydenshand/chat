@@ -3,7 +3,7 @@
 		<h2>Chat</h2>
 		<h5>Users</h5>
 		{{#each @model.users as |user|}}
-			{{ user.name }}
+			<li>{{ user.name }}</li>
 		{{/each}}<br><br>
 		<h5>Channels</h5>
 		{{#each @model.channels as |channel|}}
