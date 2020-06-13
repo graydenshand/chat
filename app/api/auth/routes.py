@@ -29,11 +29,11 @@ class Auth(Resource):
 		Authorize email / password combination
 		"""
 		user = User.query.filter(User.email == g.validated_object['email']).first()
-		if user:
+		if user and user.is_valid_password(g.validated_object['password']):
 			token = generate_token(user)
 			return AuthOutputSchema().dump({"token": token}), 201
 		else:
-			return AuthOutputSchema().dump({"token": ''}), 401
+			return {"errors": ['Invalid credentials']}, 403
 
 	@validate_with(AuthInputSchema(partial=['email', 'password']))
 	def put(self):

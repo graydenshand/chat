@@ -5,13 +5,8 @@ from marshmallow import Schema, fields
 from marshmallow import post_load
 from copy import deepcopy
 import hashlib
+from sqlalchemy.orm import validates
 
-class Messages(fields.Field):
-    """
-    A field that serializes a Message to it's user_id
-    """
-    def _serialize(self, messages, attr, obj, **kwargs):
-        return [message.id for message in messages]
 
 class UserSchema(Schema):
     id = fields.Integer()
@@ -55,7 +50,7 @@ class User(db.Model):
             links = ''
         return links
 
-    def validate_password(self, password):
+    def is_valid_password(self, password):
         m = hashlib.sha256()
         m.update(bytes(password, 'utf-8'))
         return m.hexdigest() == self.password
@@ -66,4 +61,8 @@ class User(db.Model):
         m.update(bytes(password, 'utf-8'))
         return m.hexdigest()
 
-
+    @validates('password')
+    def validate_password(self, key, password):
+        # overrides password setter -- converts a string 
+        # to a hash before setting the property
+        return self.hash_password(password)

@@ -6,17 +6,10 @@ export default class CustomAuthenticator extends Base {
 
 
   authenticate(options) {
-    return this.postData(`${ENV.api_url}/auth.json`, options)
-  }
-
-  restore(options) {
-  	return this.putData(`${ENV.api_url}/auth.json`, options)
-  }
-
-
-  async postData(url = '', data = {}) {
+  	return new Ember.RSVP.Promise( async (resolve, reject) => {
 	  // Default options are marked with *
-	  const response = await fetch(url, {
+	  var accept = true;
+	  fetch(`${ENV.api_url}/auth.json`, {
 	    method: 'POST', // *GET, POST, PUT, DELETE, etc.
 	    mode: 'cors', // no-cors, *cors, same-origin
 	    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -27,10 +20,28 @@ export default class CustomAuthenticator extends Base {
 	    },
 	    redirect: 'follow', // manual, *follow, error
 	    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-	    body: JSON.stringify(data) // body data type must match "Content-Type" header
+	    body: JSON.stringify(options) // body data type must match "Content-Type" header
+	  }).then( (response) => { 
+
+	  	if (response.status != 201) {
+	  		accept = false;
+	  	} 
+	  	return response.json()
+	  }).then( (response) => {
+	  	if (accept) { 
+	  		resolve(response)
+	  	} else {
+	  		reject(response)
+	  	}
+	  }).catch( (error) => {
+	  	reject(error)
 	  });
-	  return response.json(); // parses JSON response into native JavaScript objects
-	}
+	})
+  }
+
+  restore(options) {
+  	return this.putData(`${ENV.api_url}/auth.json`, options)
+  }
 
 
   async putData(url = '', data = {}) {

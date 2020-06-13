@@ -1,10 +1,11 @@
 from flask_restful import Resource, fields
-from flask import g
+from flask import g, request
 from ..models import User
 from app import db, auth
 from datetime import datetime
 from app.api.utilities.api import validate_with
 from app import socketio
+from marshmallow import EXCLUDE
 
 class Users(Resource):
 	"""
@@ -36,13 +37,17 @@ class Users(Resource):
 			return {"users": User.schema(many=True).dump(users)}, 200
 
 	@auth.login_required
-	@validate_with(User.schema())
+	@validate_with(User.schema(unknown=EXCLUDE))
 	def post(self):
 		"""
 		Create a new user
 		"""
 		# Create user
 		user = g.validated_object
+
+		# retrieve the password passed to endpoint, 
+		## defaults to null to allow passwordless users
+		user.password = request.json.get('password')
 
 		# Save user to db
 		db.session.add(user)

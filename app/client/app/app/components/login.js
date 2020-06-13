@@ -13,12 +13,22 @@ export default class LoginComponent extends Component {
     async authenticate() {
 		const credentials = {email: this.email, password: this.password};
 		const authenticator = 'authenticator:application'; // or 'authenticator:jwt'
-		await this.session.authenticate(authenticator, credentials);
+		this.session.authenticate(authenticator, credentials)
+		.then(
+			(data) => {
+				//console.log(data)
+				if (this.session.isAuthenticated) {
+					console.log('authenticated')
+					console.log(this.session.data)
+				}
+			}
+		).catch(
+			(error) => {
+				console.log(error)
+			}
+		);
 
-		if (this.session.isAuthenticated) {
-			console.log('authenticated')
-			console.log(this.session.data)
-		}
+		
     }
 
     @action
