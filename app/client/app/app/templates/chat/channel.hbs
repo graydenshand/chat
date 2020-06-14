@@ -1,5 +1,5 @@
 <div id='chat-channel'>
-	<h3><span>#{{ @model.name }}</span></h3>
+	<h3><span>#{{ @model.channel.name }}</span></h3>
 	<div style='flex-grow: 1; display:flex; flex-direction: column; justify-content: flex-end;'>
 		<ul class='message-container'
 			{{did-insert this.scrollMessageContainer}} 
@@ -12,7 +12,7 @@
 
 		</ul>
 		<div>
-			<textarea placeholder="Send a message" class='form-control' id='chat-input' {{did-insert this.setUpMessageInput}} oninput={{this.resizeMessageInput}}>{{ this.messageText}}</textarea>
+			<textarea placeholder="Send a message" class='form-control' id='chat-input' value={{this.messageText}} {{did-insert this.setUpMessageInput}} oninput={{this.resizeMessageInput}} onkeyup={{this.updateMessageText}}>{{ this.messageText}}</textarea>
 			<div class="text-right">
 				<BsButton @type="primary" {{on "click" this.insertMessage}} id='chat-submit-btn'>Submit</BsButton> 
 			</div>

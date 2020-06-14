@@ -8,8 +8,8 @@ export default class ChatRoute extends Route {
 	async model(params) {
 		let users = await this.store.findAll('user').catch((errors) => {console.log(errors.errors)});
 		let channels = await this.store.findAll('channel').catch((errors) => {console.log(errors.errors)});
-		let messages = await this.store.findAll('message').catch((errors) => {console.log(errors.errors)});
-		return {"users": users, "channels": channels, "messages": messages};
+		//let messages = await this.store.findAll('message').catch((errors) => {console.log(errors.errors)});
+		return {"users": users, "channels": channels};
 	}
 
 }

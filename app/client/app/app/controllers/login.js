@@ -1,20 +1,14 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-
+import { tracked } from '@glimmer/tracking';
 
 export default class LoginController extends Controller {
 	@service session
+	@tracked loginMode = true // false for "signup" mode
 
 	@action
-    async authenticate() {
-	      const credentials = this.getProperties('email', 'password');
-	      const authenticator = 'authenticator:application'; // or 'authenticator:jwt'
-	      await this.session.authenticate(authenticator, credentials);
-	      
-	      if (this.session.isAuthenticated) {
-	      	console.log('authenticated')
-	      	console.log(this.session.data)
-	      }
+    toggleMode() {
+    	this.loginMode = !this.loginMode
     }
 }

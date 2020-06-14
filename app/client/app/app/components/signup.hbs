@@ -1,0 +1,26 @@
+{{!-- Sign up form --}}
+<form id='signup' {{action "signUp" on="submit"}}>
+	{{#if this.errorMessage}}
+	<p>{{this.errorMessage}}</p>
+	{{/if}}
+
+	<div class="form-group">
+		<label for="name">Name</label>
+		{{input id='name' placeholder='Tony Stark' value=this.name class="form-control"}}
+	</div>
+	<div class="form-group">
+		<label for="email">Email</label>
+		{{input id='email' placeholder='tstark@starkindustries.com' value=this.email class="form-control"}}
+	</div>
+	<div class="form-group">
+		<label for="password">Password</label>
+		{{input id='password' placeholder='Enter Password' type='password' value=this.password class="form-control"}}
+	</div>
+	<div class="form-group">
+		<label for="password2">Retype Password</label>
+		{{input id='password2' placeholder='Enter Password' type='password' value=this.password class="form-control"}}
+	</div>
+	<BsButton type="submit" @type="primary">Login</BsButton>
+</form>
+
+{{yield}}

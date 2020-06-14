@@ -1,6 +1,14 @@
 <div class='row'>
 	<div class='col-sm-6 offset-sm-3'>
-		<Login />
+		{{!-- Login/Signup component --}}
+		{{#if this.loginMode }}
+			<p><a href="#" {{on "click" this.toggleMode}}>Sign up</a></p>
+			<Login />
+		{{else}}
+			<p><a href="#" {{on "click" this.toggleMode}}>Log in</a></p>
+			<Signup />
+		{{/if}}
+		
 	</div>
 </div>
 {{outlet}}
