@@ -36,7 +36,6 @@ class Users(Resource):
 			users = User.query.all()
 			return {"users": User.schema(many=True).dump(users)}, 200
 
-	@auth.login_required
 	@validate_with(User.schema(unknown=EXCLUDE))
 	def post(self):
 		"""
