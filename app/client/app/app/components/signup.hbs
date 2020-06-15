@@ -10,11 +10,12 @@
 	</div>
 	<div class="form-group">
 		<label for="email">Email</label>
-		{{input id='email' placeholder='tstark@starkindustries.com' value=this.email class="form-control"}}
+		<Input id='email' placeholder='tstark@starkindustries.com' @value={{this.email}} class="form-control" @change={{this.validateEmail}}/>
 	</div>
 	<div class="form-group">
 		<label for="password">Password</label>
-		{{input id='password' placeholder='Enter Password' type='password' value=this.password class="form-control"}}
+		<Input id='password' placeholder='Enter Password' type='password' @value={{this.password}} class="form-control"/>
+		<small class='form-text'>Password must be at least 8 characters long, and contain at least one number and capital letter.</small>
 	</div>
 	<div class="form-group">
 		<label for="password2">Retype Password</label>

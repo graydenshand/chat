@@ -13,11 +13,9 @@ def verify_token(token):
 	print(token)
 	try:
 		data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithm="HS256")
-	except:  # noqa: E722
-		return False
-	if 'id' in data:
-		print(data)
-		return User.query.get(data['id'])
+	except: 
+		return None
+	return User.query.get(data['id'])
 
 @basic_auth.verify_password
 def verify_password(email, password):

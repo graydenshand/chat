@@ -16,6 +16,8 @@ export default class SignupComponent extends Component {
 	
 	@action
     signUp() {
+    	if (!this.validateEmail()) {return null};
+     	if (!this.validatePassword()) {return null};
     	this.createUser().then((data) => {
     		this.store.pushPayload(data)
     		const credentials = {email: this.email, password: this.password};
@@ -75,5 +77,61 @@ export default class SignupComponent extends Component {
 		  	reject(error)
 		  });
 		})
+	}
+
+	@action
+	validateEmail() {
+	  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	  if (!re.test(this.email)) {
+	  	this.errorMessage = 'Invalid email';
+	  	return false;
+	  } else {
+	  	return true;
+	  }
+	}
+
+	validatePassword() {
+		/*
+		Rules
+			1 Uppercase
+			1 Number
+			> 8 chars
+			password2 input matches
+		*/
+		
+		// Uppercase char
+		let uppercaseCheck = false;
+		let re = /[A-Z]/;
+		if (re.test(this.password)) {
+			uppercaseCheck = true;
+		} 
+
+		// Number
+		let numberCheck = false;
+		re = /\d/;
+		if (re.test(this.password)) {
+			numberCheck = true;
+		} 
+
+		// Length >= 8
+		let lengthCheck = false;
+		if (this.password.length >= 8) {
+			lengthCheck = true;
+		}
+
+		// Retype password check
+		let retypeCheck = false;
+		if (this.password2 == this.password) {
+			retypeCheck = true
+		}
+
+		const checkArray = [uppercaseCheck, numberCheck, lengthCheck, retypeCheck]
+		console.log(checkArray)
+		if (!checkArray.every((currentValue) => {return currentValue})) {
+			this.errorMessage = 'Password failed validation'
+			return false
+		} else {
+			return true
+		}
 	}	
 }
