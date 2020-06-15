@@ -6,12 +6,12 @@ import { tracked } from '@glimmer/tracking';
 
 
 export default class ChatChannelController extends Controller {
-	@service store
+	@service store;
+	@service session;
 	@tracked messageText;
 
 	@action
 	scrollMessageContainer() {
-		const messageModel = this.get('model.channel.messages')
 		var messageContainer = document.querySelector(".message-container");
 		messageContainer.scrollTop = messageContainer.scrollHeight
 	}
@@ -21,16 +21,18 @@ export default class ChatChannelController extends Controller {
 		console.log('Inserting message')
 		let messageModel = this.get('model.messages');
 		let channel = this.store.peekRecord('channel', this.get('channelId'));
-		let user = this.store.peekRecord('user', 1)
+		let user = this.store.peekRecord('user', this.session.data.authenticated.id)
 		let message = this.store.createRecord('message', {
 			message: this.messageText,
 			userId: user,
 			channelId: channel,
 		})
-		messageModel.pushObject(message)
-		message.save();
-		this.messageText = ''
-		this.scrollMessageContainer()
+		message.save().then((data)=>{
+			messageModel.pushObject(message);
+			this.messageText = ''
+			// need to wait for new message to render
+			window.setTimeout(this.scrollMessageContainer,10);
+		});
 	}
 
 
